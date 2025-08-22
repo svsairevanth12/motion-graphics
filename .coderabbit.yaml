@@ -1,0 +1,478 @@
+# CodeRabbit Configuration for AI-Powered Motion Graphics Generator
+# Optimized for performance, type safety, and code quality
+
+# Global settings
+language: en-US
+early_access: false
+tone_instructions: |
+  - Be concise and actionable in feedback
+  - Focus on performance implications for animation rendering
+  - Prioritize type safety and memory management
+  - Suggest specific improvements with code examples
+  - Flag potential security vulnerabilities immediately
+
+# Review settings
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_empty_files: true
+  auto_review:
+    enabled: true
+    drafts: false
+
+# Path-based instructions for different parts of the codebase
+path_instructions:
+  - path: "lib/motion-engine/**"
+    instructions: |
+      Focus on:
+      - Animation performance and memory management
+      - Type safety for complex motion graphics properties
+      - Proper cleanup of animation resources
+      - Frame rate optimization and smooth rendering
+      - Immutable state patterns for timeline data
+
+  - path: "components/editor/**"
+    instructions: |
+      Focus on:
+      - React performance optimization (memoization, callbacks)
+      - Real-time update efficiency
+      - Proper event handling for canvas interactions
+      - Accessibility for editor controls
+      - Error boundary implementation
+
+  - path: "hooks/**"
+    instructions: |
+      Focus on:
+      - Proper dependency arrays in useEffect
+      - Memory leak prevention in custom hooks
+      - Consistent error handling patterns
+      - Performance optimization for frequent updates
+      - Proper cleanup in useEffect returns
+
+  - path: "lib/ai/**"
+    instructions: |
+      Focus on:
+      - API key security and environment variable usage
+      - Proper error handling for AI service failures
+      - Rate limiting and retry logic
+      - Input validation and sanitization
+      - Response parsing and type safety
+
+  - path: "app/api/**"
+    instructions: |
+      Focus on:
+      - Input validation and sanitization
+      - Proper error responses with status codes
+      - Authentication and authorization
+      - Rate limiting implementation
+      - Database query optimization
+
+# Custom rules for motion graphics specific patterns
+custom_rules:
+  # Performance Rules
+  - id: "animation-performance"
+    pattern: |
+      - Flag heavy computations in render methods
+      - Detect missing React.memo for expensive components
+      - Identify inefficient frame calculations
+      - Check for proper cleanup of animation intervals/timeouts
+    severity: "high"
+    message: "Animation performance issue detected. Consider memoization or optimization."
+
+  - id: "memory-management"
+    pattern: |
+      - Detect potential memory leaks in animation loops
+      - Flag missing cleanup in useEffect
+      - Identify large object creation in render
+      - Check for proper disposal of video/canvas resources
+    severity: "high"
+    message: "Potential memory leak detected. Ensure proper cleanup."
+
+  # Type Safety Rules
+  - id: "strict-typing"
+    pattern: |
+      - Flag usage of 'any' type
+      - Detect missing type definitions for props
+      - Identify unsafe type assertions
+      - Check for proper generic constraints
+    severity: "medium"
+    message: "Improve type safety. Avoid 'any' and add proper type definitions."
+
+  - id: "motion-types"
+    pattern: |
+      - Ensure animation properties have proper types
+      - Check keyframe data structure consistency
+      - Validate timeline position types
+      - Verify element property type safety
+    severity: "medium"
+    message: "Motion graphics types need proper definition for type safety."
+
+  # React Best Practices
+  - id: "react-performance"
+    pattern: |
+      - Detect inline object/function creation in JSX
+      - Flag missing dependency arrays in useEffect
+      - Identify unnecessary re-renders
+      - Check for proper key props in lists
+    severity: "medium"
+    message: "React performance issue. Consider memoization or dependency optimization."
+
+  - id: "hooks-best-practices"
+    pattern: |
+      - Ensure hooks are called at top level
+      - Check for proper cleanup in custom hooks
+      - Validate hook dependency arrays
+      - Flag potential infinite loops in useEffect
+    severity: "high"
+    message: "Hooks best practice violation detected."
+
+  # Security Rules
+  - id: "api-security"
+    pattern: |
+      - Flag hardcoded API keys or secrets
+      - Detect missing input validation
+      - Check for proper environment variable usage
+      - Identify potential XSS vulnerabilities
+    severity: "critical"
+    message: "Security vulnerability detected. Review immediately."
+
+  - id: "data-validation"
+    pattern: |
+      - Ensure user inputs are validated
+      - Check for proper sanitization of AI responses
+      - Validate file upload restrictions
+      - Verify proper error message handling
+    severity: "high"
+    message: "Data validation missing. Add proper input validation."
+
+  # Architecture Rules
+  - id: "separation-of-concerns"
+    pattern: |
+      - Flag mixed business logic in UI components
+      - Detect large component files (>300 lines)
+      - Check for proper abstraction layers
+      - Identify tightly coupled modules
+    severity: "medium"
+    message: "Separation of concerns violation. Consider refactoring."
+
+  - id: "consistent-patterns"
+    pattern: |
+      - Ensure consistent naming conventions
+      - Check for proper error handling patterns
+      - Validate consistent API response handling
+      - Verify uniform component structure
+    severity: "low"
+    message: "Inconsistent pattern detected. Follow established conventions."
+
+# File-specific rules
+file_rules:
+  "*.tsx":
+    - "Ensure components are properly typed with interfaces"
+    - "Check for accessibility attributes where needed"
+    - "Validate proper error boundary usage"
+    - "Ensure proper key props for dynamic lists"
+
+  "*.ts":
+    - "Enforce strict TypeScript configuration"
+    - "Check for proper error handling"
+    - "Validate function return types"
+    - "Ensure proper async/await usage"
+
+  "**/api/**/*.ts":
+    - "Validate input sanitization"
+    - "Check authentication and authorization"
+    - "Ensure proper error responses"
+    - "Validate rate limiting implementation"
+
+  "**/motion-engine/**/*.ts":
+    - "Check animation performance patterns"
+    - "Validate memory management"
+    - "Ensure proper type definitions for motion data"
+    - "Check for frame rate optimization"
+
+# Ignore patterns for generated or vendor code
+ignore:
+  - "node_modules/**"
+  - ".next/**"
+  - "dist/**"
+  - "build/**"
+  - "*.min.js"
+  - "*.generated.*"
+
+# Review focus areas
+focus_areas:
+  - performance
+  - security
+  - type_safety
+  - maintainability
+  - accessibility
+
+# Auto-fix suggestions
+auto_suggestions:
+  enabled: true
+  types:
+    - "Add missing type annotations"
+    - "Fix React hooks dependency arrays"
+    - "Optimize performance with memoization"
+    - "Add proper error handling"
+    - "Improve accessibility attributes"
+
+# Motion Graphics Specific Rules
+motion_graphics_rules:
+  # Animation Performance
+  - id: "frame-rate-optimization"
+    description: "Ensure animations maintain 60fps performance"
+    patterns:
+      - "requestAnimationFrame usage instead of setInterval"
+      - "Proper frame skipping for heavy computations"
+      - "Canvas optimization techniques"
+      - "WebGL usage for complex animations"
+    severity: "high"
+
+  - id: "timeline-efficiency"
+    description: "Optimize timeline operations for smooth scrubbing"
+    patterns:
+      - "Efficient keyframe interpolation"
+      - "Proper caching of computed values"
+      - "Minimal DOM updates during playback"
+      - "Debounced timeline updates"
+    severity: "medium"
+
+  # Memory Management
+  - id: "resource-cleanup"
+    description: "Proper cleanup of animation resources"
+    patterns:
+      - "Canvas context cleanup"
+      - "Animation frame cancellation"
+      - "Event listener removal"
+      - "WebGL resource disposal"
+    severity: "critical"
+
+  - id: "large-file-handling"
+    description: "Efficient handling of large video/image files"
+    patterns:
+      - "Streaming for large files"
+      - "Progressive loading"
+      - "Memory-efficient image processing"
+      - "Proper garbage collection triggers"
+    severity: "high"
+
+  # AI Integration Quality
+  - id: "ai-response-validation"
+    description: "Validate and sanitize AI-generated content"
+    patterns:
+      - "Proper JSON parsing with error handling"
+      - "Content sanitization for XSS prevention"
+      - "Response timeout handling"
+      - "Fallback content for AI failures"
+    severity: "high"
+
+  - id: "prompt-optimization"
+    description: "Optimize AI prompt engineering"
+    patterns:
+      - "Consistent prompt templates"
+      - "Proper context injection"
+      - "Token usage optimization"
+      - "Response caching strategies"
+    severity: "medium"
+
+# Code Quality Metrics
+quality_metrics:
+  complexity_threshold: 10
+  file_length_threshold: 300
+  function_length_threshold: 50
+  parameter_count_threshold: 5
+  nesting_depth_threshold: 4
+
+# Testing Requirements
+testing_rules:
+  required_coverage: 80
+  critical_paths:
+    - "lib/motion-engine/**"
+    - "lib/ai/**"
+    - "app/api/**"
+  test_patterns:
+    - "*.test.ts"
+    - "*.test.tsx"
+    - "*.spec.ts"
+    - "*.spec.tsx"
+
+# Performance Benchmarks
+performance_rules:
+  - id: "render-performance"
+    description: "Monitor rendering performance"
+    thresholds:
+      frame_time: "16ms"  # 60fps
+      memory_usage: "100MB"
+      bundle_size: "500KB"
+    severity: "high"
+
+  - id: "api-performance"
+    description: "Monitor API response times"
+    thresholds:
+      response_time: "2000ms"
+      ai_generation: "10000ms"
+      file_upload: "30000ms"
+    severity: "medium"
+
+# Security Scanning
+security_rules:
+  - id: "environment-variables"
+    description: "Ensure proper environment variable usage"
+    patterns:
+      - "No hardcoded secrets"
+      - "Proper .env file structure"
+      - "Client-side variable validation"
+    severity: "critical"
+
+  - id: "input-sanitization"
+    description: "Validate all user inputs"
+    patterns:
+      - "File upload validation"
+      - "Prompt injection prevention"
+      - "SQL injection prevention"
+      - "XSS prevention"
+    severity: "critical"
+
+# Documentation Requirements
+documentation_rules:
+  required_sections:
+    - "README.md with setup instructions"
+    - "API documentation"
+    - "Component documentation"
+    - "Architecture overview"
+  code_comments:
+    - "Complex algorithm explanations"
+    - "Performance optimization notes"
+    - "Security considerations"
+    - "Browser compatibility notes"
+
+# AI Code Quality Rules (Anti-AI Slop)
+ai_code_quality:
+  - id: "remove-placeholder-comments"
+    description: "Remove AI-generated placeholder comments"
+    patterns:
+      - "// TODO: Implement this"
+      - "// This is a placeholder"
+      - "// Add your code here"
+      - "// Implementation needed"
+    severity: "medium"
+    message: "Remove placeholder comments and implement proper functionality"
+
+  - id: "avoid-generic-naming"
+    description: "Avoid generic AI-generated variable names"
+    patterns:
+      - "data, result, response, item, element, value"
+      - "handleClick, handleChange, handleSubmit"
+      - "Component, Container, Wrapper"
+    severity: "low"
+    message: "Use descriptive, domain-specific names"
+
+  - id: "remove-console-logs"
+    description: "Remove debug console.log statements"
+    patterns:
+      - "console.log"
+      - "console.warn"
+      - "console.error (except in error handlers)"
+    severity: "medium"
+    message: "Replace console statements with proper logging"
+
+  - id: "proper-error-handling"
+    description: "Replace generic try-catch blocks"
+    patterns:
+      - "catch (error) { console.log(error) }"
+      - "catch (e) { throw e }"
+      - "Empty catch blocks"
+    severity: "high"
+    message: "Implement proper error handling with specific error types"
+
+  - id: "avoid-magic-numbers"
+    description: "Replace magic numbers with named constants"
+    patterns:
+      - "Hardcoded animation durations"
+      - "Hardcoded dimensions"
+      - "Hardcoded timeouts"
+    severity: "medium"
+    message: "Use named constants for magic numbers"
+
+  - id: "specific-type-definitions"
+    description: "Use specific types instead of generic ones"
+    patterns:
+      - "any, unknown, object"
+      - "Record<string, any>"
+      - "Function type without parameters"
+    severity: "high"
+    message: "Define specific types for better type safety"
+
+# Code Smell Detection
+code_smells:
+  - id: "large-components"
+    description: "Components should be focused and small"
+    threshold: 200
+    severity: "medium"
+    message: "Consider breaking down large components"
+
+  - id: "deep-nesting"
+    description: "Avoid deeply nested code"
+    threshold: 4
+    severity: "medium"
+    message: "Reduce nesting depth for better readability"
+
+  - id: "long-parameter-lists"
+    description: "Functions should have reasonable parameter counts"
+    threshold: 4
+    severity: "low"
+    message: "Consider using object parameters or breaking down function"
+
+  - id: "duplicate-code"
+    description: "Detect code duplication"
+    threshold: 10
+    severity: "medium"
+    message: "Extract common functionality into reusable utilities"
+
+# Performance Anti-patterns
+performance_antipatterns:
+  - id: "inefficient-renders"
+    description: "Detect inefficient React rendering patterns"
+    patterns:
+      - "Inline object creation in JSX"
+      - "Inline function creation in JSX"
+      - "Missing React.memo for expensive components"
+      - "Unnecessary useEffect dependencies"
+    severity: "high"
+    message: "Optimize rendering performance"
+
+  - id: "memory-leaks"
+    description: "Detect potential memory leak patterns"
+    patterns:
+      - "Missing cleanup in useEffect"
+      - "Uncancelled async operations"
+      - "Event listeners without removal"
+      - "Timers without cleanup"
+    severity: "critical"
+    message: "Fix potential memory leak"
+
+# Motion Graphics Best Practices
+motion_best_practices:
+  - id: "animation-principles"
+    description: "Follow animation best practices"
+    patterns:
+      - "Proper easing functions"
+      - "Consistent timing"
+      - "Smooth transitions"
+      - "Performance-optimized animations"
+    severity: "medium"
+    message: "Follow animation design principles"
+
+  - id: "accessibility-animations"
+    description: "Ensure animations are accessible"
+    patterns:
+      - "Respect prefers-reduced-motion"
+      - "Provide animation controls"
+      - "Avoid seizure-inducing effects"
+      - "Maintain focus management"
+    severity: "high"
+    message: "Make animations accessible to all users"
